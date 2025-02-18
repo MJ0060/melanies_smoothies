@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 from snowflake.snowpark.functions import col
 
@@ -38,3 +39,13 @@ if ingredients_list:
     if time_to_insert:
         session.sql(my_insert_stmt).collect()
         st.success('Your Smoothie is ordered!', icon="✅")
+
+
+# Call the SmoothieFroot API
+smoothiefroot_response = requests.get("https://my.smoothiefroot.com/api/fruit/watermelon")
+
+# Display the JSON response (optional)
+# st.text(smoothiefroot_response.json())
+
+# Display the data as a DataFrame in Streamlit
+sf_df = st.dataframe(data=smoothiefroot_response.json(), use_container_width=True)
